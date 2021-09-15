@@ -44,13 +44,7 @@ public class EmployeeFacadeTest {
 //        Remove any data after each test was run
     }
 
-   @Test
-    public void createEmployeeTest(){
-       Employee em = new Employee("asdasda", "adresse", 12121);
-       facade.createEmployee(em);
 
-        assertEquals(6, em.getId());
-   }
     
 
 }

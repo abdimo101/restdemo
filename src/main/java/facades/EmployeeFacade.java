@@ -8,6 +8,7 @@ import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -17,77 +18,97 @@ import java.util.List;
  */
 public class EmployeeFacade {
 
-    private static EmployeeFacade instance;
     private static EntityManagerFactory emf;
 
     //Private Constructor to ensure Singleton
     private EmployeeFacade() {}
 
 
-    /**
-     * 
-     * @param _emf
-     * @return an instance of this facade class.
-     */
-    public static EmployeeFacade getEmployeeFacade(EntityManagerFactory _emf) {
-        if (instance == null) {
-            emf = _emf;
-            instance = new EmployeeFacade();
-        }
-        return instance;
-    }
-
     private EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
     
-    public EmployeeDTO createEmployee(Employee emp){
-        Employee employee = new Employee(emp.getName(),emp.getAddress(), emp.getSalary());
+    public void createEmployee(EmployeeDTO e){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("pu");
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            em.persist(employee);
+            em.persist(new Employee(e.getName(), e.getAddress(), e.getSalary()));
             em.getTransaction().commit();
         } finally {
             em.close();
+            emf.close();
         }
-        return new EmployeeDTO(employee);
     }
     public EmployeeDTO getEmployeeById(long id){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("pu");
         EntityManager em = emf.createEntityManager();
-        return new EmployeeDTO(em.find(Employee.class, id));
-    }
-    
-
-    public List<EmployeeDTO> getEmployeeWithHighestSalary(){
-        EntityManager em = emf.createEntityManager();
-        try{
-            TypedQuery<Employee> query = em.createQuery("select e from Employee e where e.salary = (select max(e.salary) from Employee e)", Employee.class);
-            List<Employee> emp = query.getResultList();
-            return EmployeeDTO.getDtos(emp);
-        }finally{  
+        try
+        {
+            em.getTransaction().begin();
+            TypedQuery<Employee> query = em.createQuery("select e from Employee e where e.id = :id", Employee.class);
+            query.setParameter("id", id);
+            Employee emp = query.getSingleResult();
+            em.getTransaction().commit();
+            return new EmployeeDTO(emp);
+        }
+        finally
+        {
             em.close();
+            emf.close();
         }
     }
     
+    @SuppressWarnings("unchecked")
+    public List<EmployeeDTO> getEmployeeWithHighestSalary(){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("pu");
+        EntityManager em = emf.createEntityManager();
+        try{
+            em.getTransaction().begin();
+            TypedQuery<Employee> query = em.createQuery("select e from Employee e where e.salary = (select max(e.salary) from Employee e)", Employee.class);
+            List<Employee> emp = query.getResultList();
+            em.getTransaction().commit();
+            return (List<EmployeeDTO>)(List<?>) emp;
+        }finally{  
+            em.close();
+            emf.close();
+        }
+    }
+    @SuppressWarnings("unchecked")
     public List<EmployeeDTO> getAllEmployees(){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("pu");
         EntityManager em = emf.createEntityManager();
-        TypedQuery<Employee> query = em.createQuery("SELECT e FROM Employee e", Employee.class);
-        List<Employee> emp = query.getResultList();
-        return EmployeeDTO.getDtos(emp);
+        try
+        {
+            em.getTransaction().begin();
+            TypedQuery<Employee> query = em.createQuery("SELECT e FROM Employee e", Employee.class);
+            List<Employee> emp = query.getResultList();
+            em.getTransaction().commit();
+            return (List<EmployeeDTO>)(List<?>) emp;
+        }
+        finally
+        {
+            em.close();
+            emf.close();
+        }
     }
 
-    public List<EmployeeDTO> getEmployeesByName(){
+    public List<EmployeeDTO> getEmployeesByName(String name){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("pu");
         EntityManager em = emf.createEntityManager();
-        TypedQuery<Employee> query = em.createQuery("SELECT e.name FROM Employee e", Employee.class);
-        List<Employee> emp = query.getResultList();
-        return EmployeeDTO.getDtos(emp);
+        try
+        {
+            em.getTransaction().begin();
+            TypedQuery<Employee> query = em.createQuery("SELECT e.name FROM Employee e where e.name = :name", Employee.class);
+            query.setParameter("name", name);
+            List<Employee> emp = query.getResultList();
+            em.getTransaction().commit();
+            return (List<EmployeeDTO>)(List<?>) emp;
+        }
+        finally
+        {
+            em.close();
+            emf.close();
+        }
     }
-    
-    public static void main(String[] args) {
-        emf = EMF_Creator.createEntityManagerFactory();
-        EmployeeFacade fe = getEmployeeFacade(emf);
-        fe.getAllEmployees().forEach(dto->System.out.println(dto));
-    }
-
 }

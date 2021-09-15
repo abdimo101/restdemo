@@ -13,17 +13,37 @@ import java.util.List;
 
 
 public class EmployeeDTO {
-    private long id;
     private String name;
     private String address;
+    private int salary;
 
-    public EmployeeDTO(Employee emp) {
+    public EmployeeDTO(Employee e) {
+        this.name = e.getName();
+        this.address = e.getAddress();
+        this.salary = e.getSalary();
     }
 
-    public static List<EmployeeDTO> getDtos(List<Employee> emp){
-        List<EmployeeDTO> empdtos = new ArrayList();
-        emp.forEach(em->empdtos.add(new EmployeeDTO(em)));
-        return empdtos;
+    public String getName() {
+        return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public int getSalary() {
+        return salary;
+    }
+
+    public void setSalary(int salary) {
+        this.salary = salary;
+    }
 }

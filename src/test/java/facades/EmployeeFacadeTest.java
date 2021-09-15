@@ -21,11 +21,6 @@ public class EmployeeFacadeTest {
     public EmployeeFacadeTest() {
     }
 
-    @BeforeAll
-    public static void setUpClass() {
-       emf = EMF_Creator.createEntityManagerFactoryForTest();
-       facade = EmployeeFacade.getEmployeeFacade(emf);
-    }
 
     @AfterAll
     public static void tearDownClass() {

@@ -20,8 +20,8 @@ public class EmployeeFacade {
 
     private static EntityManagerFactory emf;
 
-    //Private Constructor to ensure Singleton
-    private EmployeeFacade() {}
+
+    public EmployeeFacade() {}
 
 
     private EntityManager getEntityManager() {
@@ -111,4 +111,5 @@ public class EmployeeFacade {
             emf.close();
         }
     }
+
 }

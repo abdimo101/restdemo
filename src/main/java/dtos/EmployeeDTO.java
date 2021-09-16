@@ -17,6 +17,12 @@ public class EmployeeDTO {
     private String address;
     private int salary;
 
+    public EmployeeDTO(String name, String address, int salary) {
+        this.name = name;
+        this.address = address;
+        this.salary = salary;
+    }
+
     public EmployeeDTO(Employee e) {
         this.name = e.getName();
         this.address = e.getAddress();

@@ -30,8 +30,8 @@ public class MovieResource {
             List<MovieDTO> md = facade.getAllMovies();
             return new Gson().toJson(md);
     }
-    //url skal fx være api/movie/id=1
-    @Path("/id={id}")
+    //url skal fx være api/movie/1
+    @Path("/{id}")
     @GET
     @Produces("application/json")
     public String getMovieById(@PathParam("id") Integer id){

@@ -26,6 +26,10 @@ public class Tester {
         Movie m2 = new Movie(2012, "The Avengers", avengersActors);
 
         em.getTransaction().begin();
+        em.persist(e1);
+        em.persist(e2);
+        em.persist(e3);
+        em.persist(m1);
         em.persist(m2);
         em.getTransaction().commit();
 

@@ -22,16 +22,21 @@ public class Tester {
         avengersActors.add("Robert Downey Jr.");
         avengersActors.add("Chris Evans");
         avengersActors.add("Mark Ruffalo");
-        Movie m1 = new Movie(1999, "The Matrix", matrixActors);
-        Movie m2 = new Movie(2012, "The Avengers", avengersActors);
 
+    try {
         em.getTransaction().begin();
         em.persist(e1);
         em.persist(e2);
         em.persist(e3);
-        em.persist(m1);
-        em.persist(m2);
+        em.persist(new Movie("The Matrix", 1999, matrixActors));
+        em.persist(new Movie("The Avengers", 2012, avengersActors));
         em.getTransaction().commit();
+
+    }
+    finally {
+        em.close();
+        emf.close();
+    }
 
     }
 }

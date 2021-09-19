@@ -18,7 +18,7 @@ public class MovieDTO {
     private List<String> actors = new ArrayList<>();
 
 
-    public MovieDTO(int year, String title, List<String> actors) {
+    public MovieDTO(String title, int year, List<String> actors) {
         this.year = year;
         this.title = title;
         this.actors = actors;

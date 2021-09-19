@@ -27,12 +27,13 @@ public class MovieFacade {
         return emf.createEntityManager();
     }
 
-    public void createMovie(Movie m){
+    public void createMovie(Movie md){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("pu");
         EntityManager em = emf.createEntityManager();
         try {
+            Movie m = new Movie(md.getTitle(), md.getYear(), md.getActors());
             em.getTransaction().begin();
-            em.persist(new Movie(m.getYear(), m.getTitle(), m.getActors()));
+            em.persist(m);
             em.getTransaction().commit();
         } finally {
             em.close();

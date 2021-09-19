@@ -75,13 +75,6 @@ public class MovieResourceTest {
         actors2.add("kim");
         actors2.add("lars");
 
-        Movie m1 = new Movie(1999, "film1", actors1);
-        Movie m2 = new Movie(2012, "film2", actors2);
-
-        em.getTransaction().begin();
-        em.persist(m1);
-        em.persist(m2);
-        em.getTransaction().commit();
     }
     //@Test
     //    public void testServerIsUp() {

@@ -17,7 +17,6 @@ public class RenameMeResource {
     private final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
        
     private final FacadeExample FACADE =  FacadeExample.getFacadeExample(EMF);
-    private final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
             
     @GET
     @Produces({MediaType.APPLICATION_JSON})
